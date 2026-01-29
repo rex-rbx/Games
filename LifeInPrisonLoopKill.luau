@@ -9,6 +9,7 @@ local Players = GetService.Players
 local ReplicatedStorage = GetService.ReplicatedStorage
 local RunService = GetService.RunService
 local Workspace = GetService.Workspace
+local Teams = GetService.Teams
 local LocalPlayer = Players.LocalPlayer
 local RemoteEvent = ReplicatedStorage.Events.RemoteEvent
 local Pickups = Workspace.pickups
@@ -49,7 +50,6 @@ RunService.Heartbeat:Connect(function()
 	if not Root or not Knife or not Humanoid then return end
 	
 	if Root.Anchored then Root.Anchored = false end
-	if Knife.Parent == Backpack then Humanoid:EquipTool(Knife) end
 	
 	if TheTarget and TheTarget.Parent then
 		local TargetChar = TheTarget.Character
@@ -59,10 +59,28 @@ RunService.Heartbeat:Connect(function()
 			local TargetHumanoid = TargetChar:FindFirstChildOfClass("Humanoid")
 			local ForceField = TargetChar:FindFirstChildOfClass("ForceField")
 			if TargetRoot and TargetHead and TargetHumanoid and TargetHumanoid.Health > 0 and not ForceField then
+				local MyTeam = LocalPlayer.Team
+				local TargetTeam = TheTarget.Team
+				local IsPolice = MyTeam and MyTeam.Name == "Police"
+				local TargetIsPolice = TargetTeam and TargetTeam.Name == "Police"
+				
 				Root.CFrame = TargetRoot.CFrame * CFrame.new(0, -6, 0)
-				if (Root.Position - TargetRoot.Position).Magnitude <= 37 then
-					local Direction = (TargetHead.Position - Root.Position).Unit
-					RemoteEvent:FireServer(16, Knife, TargetHead, Direction)
+				
+				if IsPolice and TargetIsPolice then
+					if Knife.Parent == MyChar then
+						Humanoid:UnequipTools()
+					end
+					if (Root.Position - TargetRoot.Position).Magnitude <= 17 then
+						RemoteEvent:FireServer(33, TargetHead)
+					end
+				else
+					if Knife.Parent == Backpack then
+						Humanoid:EquipTool(Knife)
+					end
+					if (Root.Position - TargetRoot.Position).Magnitude <= 37 then
+						local Direction = (TargetHead.Position - Root.Position).Unit
+						RemoteEvent:FireServer(16, Knife, TargetHead, Direction)
+					end
 				end
 				return
 			end
@@ -87,4 +105,4 @@ RunService.Heartbeat:Connect(function()
 	if not TheTarget then Root.CFrame = CFrame.new(99999, 99999, 99999) end
 end)
 
-warn("ok")
+warn("Auto loopkill ready")
