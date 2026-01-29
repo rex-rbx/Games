@@ -13,6 +13,8 @@ local LocalPlayer = Players.LocalPlayer
 local RemoteEvent = ReplicatedStorage.Events.RemoteEvent
 local Pickups = Workspace.pickups
 
+local TheTarget = nil
+
 RunService.Heartbeat:Connect(function()
 	local MyChar = LocalPlayer.Character
 	if not MyChar then return end
@@ -49,27 +51,40 @@ RunService.Heartbeat:Connect(function()
 	if Root.Anchored then Root.Anchored = false end
 	if Knife.Parent == Backpack then Humanoid:EquipTool(Knife) end
 	
-	local FoundTarget = false
+	if TheTarget and TheTarget.Parent then
+		local TargetChar = TheTarget.Character
+		if TargetChar then
+			local TargetRoot = TargetChar:FindFirstChild("HumanoidRootPart")
+			local TargetHead = TargetChar:FindFirstChild("Head")
+			local TargetHumanoid = TargetChar:FindFirstChildOfClass("Humanoid")
+			local ForceField = TargetChar:FindFirstChildOfClass("ForceField")
+			if TargetRoot and TargetHead and TargetHumanoid and TargetHumanoid.Health > 0 and not ForceField then
+				Root.CFrame = TargetRoot.CFrame * CFrame.new(0, -6, 0)
+				if (Root.Position - TargetRoot.Position).Magnitude <= 37 then
+					local Direction = (TargetHead.Position - Root.Position).Unit
+					RemoteEvent:FireServer(16, Knife, TargetHead, Direction)
+				end
+				return
+			end
+		end
+	end
+	
+	TheTarget = nil
 	for _, Player in Players:GetPlayers() do
 		if Player ~= LocalPlayer then
 			local TargetChar = Player.Character
 			if TargetChar then
-				local TargetRoot = TargetChar:FindFirstChild("HumanoidRootPart")
-				local TargetHead = TargetChar:FindFirstChild("Head")
 				local TargetHumanoid = TargetChar:FindFirstChildOfClass("Humanoid")
 				local ForceField = TargetChar:FindFirstChildOfClass("ForceField")
-				if TargetRoot and TargetHead and TargetHumanoid and TargetHumanoid.Health > 0 and not ForceField then
-					FoundTarget = true
-					Root.CFrame = TargetRoot.CFrame * CFrame.new(0, -5, 0)
-					if (Root.Position - TargetRoot.Position).Magnitude <= 17 then
-						local Direction = (TargetHead.Position - Root.Position).Unit
-						RemoteEvent:FireServer(16, Knife, TargetHead, Direction)
-					end
+				if TargetHumanoid and TargetHumanoid.Health > 0 and not ForceField then
+					TheTarget = Player
+					break
 				end
 			end
 		end
 	end
-	if not FoundTarget then Root.CFrame = CFrame.new(99999, 99999, 99999) end
+	
+	if not TheTarget then Root.CFrame = CFrame.new(99999, 99999, 99999) end
 end)
 
 warn("ok")
