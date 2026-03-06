@@ -20,6 +20,10 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
+while not LocalPlayer do
+	Players.PlayerAdded:Wait()
+	LocalPlayer = Players.LocalPlayer
+end
 local RemoteEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("RemoteEvent")
 RemoteEvent:FireServer(1, game:GetService("Teams"):WaitForChild("Prisoners"))
 task.wait(1.5)
@@ -46,7 +50,7 @@ for _, Target in ipairs(Victims) do
 		continue
 	end
 	while Target.Parent and Target.Character and Target.Character:FindFirstChild("Humanoid") and Target.Character.Humanoid.Health > 0 do
-		local MyChar = LocalPlayer.Character
+		local MyChar = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 		if not MyChar or not MyChar:FindFirstChild("Humanoid") or MyChar.Humanoid.Health <= 0 then
 			break
         end
