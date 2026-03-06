@@ -45,6 +45,10 @@ local function GetKnife(MyChar)
 	return false
 end
 task.delay(60*3, serverHop)
+task.spawn(function() 
+    local MyChar = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait() 
+    MyChar:WaitForChild("Humanoid").Died:Connect(serverHop) 
+end)
 local Victims = Players:GetPlayers()
 for _, Target in ipairs(Victims) do
 	if Target == LocalPlayer then continue end
