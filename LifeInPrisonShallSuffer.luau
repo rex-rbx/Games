@@ -44,6 +44,7 @@ local function GetKnife(MyChar)
 	end
 	return false
 end
+task.delay(60*3, serverHop)
 local Victims = Players:GetPlayers()
 for _, Target in ipairs(Victims) do
 	if Target == LocalPlayer then continue end
