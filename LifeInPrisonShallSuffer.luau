@@ -11,7 +11,7 @@ local function serverHop()
         return HttpService:JSONDecode(game:HttpGet(api))
     end)
     if success and result and result.data then
-        for _, v in result.data do
+        for _, v in pairs(result.data) do
             if v.playing < v.maxPlayers and v.id ~= game.JobId then
                 queue_on_teleport(`repeat task.wait() until game:IsLoaded(); loadstring(game:HttpGet("{scriptUrl}"))()`)
                 local teleSuccess = pcall(function()
