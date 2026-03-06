@@ -21,7 +21,7 @@ local function serverHop()
             end
         end
     end
-    task.wait(10)
+    task.wait(5)
     serverHop()
 end
 repeat task.wait() until game:IsLoaded()
