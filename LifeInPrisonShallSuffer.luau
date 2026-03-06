@@ -6,7 +6,7 @@ local Teams = game:GetService("Teams")
 local Workspace = workspace
 local scriptUrl = "https://raw.githubusercontent.com/rex-rbx/Games/refs/heads/main/LifeInPrisonShallSuffer.luau"
 local function serverHop()
-    local api = `https://games.roblox.com/v1/games/{game.PlaceId}/servers/Public?sortOrder=Des&limit=100&excludeFullGames=true`
+    local api = `https://games.roblox.com/v1/games/{game.PlaceId}/servers/Public?sortOrder=2&limit=100&excludeFullGames=true`
     local success, result = pcall(function()
         return HttpService:JSONDecode(game:HttpGet(api))
     end)
