@@ -8,7 +8,7 @@ local function serverHop()
     if success and result and result.data then
         for _, v in result.data do
             if v.playing < v.maxPlayers and v.id ~= game.JobId then
-                queue_on_teleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/rex-rbx/Games/refs/heads/main/LifeInPrisonShallSuffer.luau"))()]])
+                queue_on_teleport([[repeat task.wait() until game:IsLoaded(); loadstring(game:HttpGet("https://raw.githubusercontent.com/rex-rbx/Games/refs/heads/main/LifeInPrisonShallSuffer.luau"))()]])
                 task.wait(0.22)
                 TeleportService:TeleportToPlaceInstance(game.PlaceId, v.id, lp)
                 break
