@@ -68,7 +68,7 @@ for _, Target in ipairs(Victims) do
 		if ForceField then break end
 		if TargetRoot and TargetHead and Root then
 			if Humanoid.Sit then Humanoid.Sit = false end
-			Root.CFrame = TargetRoot.CFrame * CFrame.new(0, -6, 0)
+			Root.CFrame = TargetRoot.CFrame
 			Root.Velocity = Vector3.zero 
 			local MyTeam = LocalPlayer.Team
 			local TargetTeam = Target.Team
