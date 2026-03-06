@@ -16,6 +16,7 @@ local function serverHop()
         end
     end
 end
+repeat task.wait() until game:IsLoaded()
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = workspace
