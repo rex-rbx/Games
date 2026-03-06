@@ -20,7 +20,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
-local RemoteEvent = ReplicatedStorage.Events.RemoteEvent
+local RemoteEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("RemoteEvent")
 RemoteEvent:FireServer(1, game:GetService("Teams"):WaitForChild("Prisoners"))
 task.wait(1.5)
 local Pickups = Workspace.pickups
