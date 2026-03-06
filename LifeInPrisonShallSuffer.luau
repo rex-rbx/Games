@@ -90,4 +90,4 @@ for _, Target in ipairs(Victims) do
 		task.wait()
 	end
 end
-ServerHop()
+serverHop()
