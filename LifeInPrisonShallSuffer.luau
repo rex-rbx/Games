@@ -1,3 +1,35 @@
+local function GetGST(timestamp: number?)
+    local t = timestamp or time()
+    local b = buffer.create(8)
+    buffer.writef64(b, 0, t)
+    local b0 = buffer.readu8(b, 0)
+    local b1 = buffer.readu8(b, 1)
+    local b2 = buffer.readu8(b, 2)
+    local b3 = buffer.readu8(b, 3)
+    local b4 = buffer.readu8(b, 4)
+    local b5 = buffer.readu8(b, 5)
+    local b6 = buffer.readu8(b, 6)
+    local b7 = buffer.readu8(b, 7)
+    local nb0 = bit32.bnot(b0)
+    local nb1 = bit32.bnot(b1)
+    local v11 = bit32.bor(bit32.lshift(bit32.band(b2, 51), 2), (bit32.rshift(bit32.band(b2, 204), 2)))
+    local v12 = bit32.bor(bit32.rshift(bit32.band(b3, 240), 4), (bit32.lshift(bit32.band(b3, 15), 4)))
+    local v13 = bit32.bor(bit32.rshift(bit32.band(b4, 240), 4), (bit32.lshift(bit32.band(b4, 15), 4)))
+    local v14 = bit32.bor(bit32.rshift(bit32.band(v13, 204), 2), (bit32.lshift(bit32.band(v13, 51), 2)))
+    local v15 = bit32.bor(bit32.rshift(bit32.band(v14, 170), 1), (bit32.lshift(bit32.band(v14, 85), 1)))
+    local nb5 = bit32.bnot(b5)
+    local nb6 = bit32.bnot(b6)
+    local v18 = bit32.bor(bit32.rshift(bit32.band(b7, 240), 4), (bit32.lshift(bit32.band(b7, 15), 4)))
+    local v19 = bit32.bor(bit32.rshift(bit32.band(v18, 204), 2), (bit32.lshift(bit32.band(v18, 51), 2)))
+    local v20 = bit32.bor(bit32.rshift(bit32.band(v19, 170), 1), (bit32.lshift(bit32.band(v19, 85), 1)))
+    local m0 = bit32.band(255, nb0)
+    local m1 = bit32.band(255, nb1)
+    local m5 = bit32.band(255, nb5)
+    local res1 = bit32.bor(m1, bit32.lshift(bit32.band(255, nb6), 8), bit32.lshift(m0, 16), (bit32.lshift(v12, 24)))
+    local res2 = bit32.bor(v20, bit32.lshift(m5, 8), bit32.lshift(v11, 16), (bit32.lshift(v15, 24)))
+    local res3 = bit32.bnot((bit32.bor(bit32.lshift(res1, 8), (bit32.rshift(res2, 16)))))
+    return { res1, res2, res3 }
+end
 local HttpService = game:GetService("HttpService")
 local TeleportService = game:GetService("TeleportService")
 local Players = game:GetService("Players")
@@ -84,7 +116,7 @@ for _, Target in Victims do
             if Knife.Parent == Backpack then Humanoid:EquipTool(Knife) end
             if (Root.Position - TargetRoot.Position).Magnitude <= 37 then
                 local Direction = (TargetHead.Position - Root.Position).Unit
-                RemoteEvent:FireServer(16, Knife, TargetHead, Direction)
+                RemoteEvent:FireServer(16, Knife, GetGST(), TargetHead, Direction)
             end
         end
         task.wait()
