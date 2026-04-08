@@ -101,7 +101,7 @@ for _, Target in Victims do
         local Backpack = LocalPlayer:FindFirstChild("Backpack")
         local Knife = MyChar:FindFirstChild("Knife") or (Backpack and Backpack:FindFirstChild("Knife"))
         if not Knife then
-            if not GetKnife(MyChar) then task.wait(0.2) end
+            if not GetKnife(MyChar) then task.wait(0.5) end
             task.wait()
             continue
         end
@@ -111,7 +111,7 @@ for _, Target in Victims do
         if TargetChar:FindFirstChildOfClass("ForceField") then break end
         if TargetRoot and TargetHead and Root then
             if Humanoid.Sit then Humanoid.Sit = false end
-            Root.CFrame = TargetRoot.CFrame
+            Root.CFrame = TargetRoot.CFrame - Vector3.new(0,6,0)
             Root.Velocity = Vector3.zero 
             if Knife.Parent == Backpack then Humanoid:EquipTool(Knife) end
             if (Root.Position - TargetRoot.Position).Magnitude <= 37 then
