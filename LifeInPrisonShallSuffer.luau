@@ -6,7 +6,7 @@ local bit32_bor = bit32.bor;
 local bit32_lshift = bit32.lshift;
 local bit32_rshift = bit32.rshift;
 local buffer_create_ret = buffer.create(8);
-local function GST()
+local function GetGST()
     local time = time()
     buffer_writef64(buffer_create_ret, 0, time);
     local v1 = buffer_readu8(buffer_create_ret, 0);
