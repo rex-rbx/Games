@@ -1,12 +1,19 @@
 --// https://unlicense.org/
+local no = {"ACKickTrigger",
+"ACTrigger",
+"ACCFrameChanged",
+"ACF"}
 for i, v in getgc() do
 	if typeof(v) == "function" and islclosure(v) and not isexecutorclosure(v) then
 		local Success, Constants = pcall(debug.getconstants, v)
 		if Success and Constants then
 			for j, Constant in Constants do
-				if typeof(Constant) == "string" and Constant == "ACTrigger" then
-					pcall(debug.setconstant, v, j, "noobAC (its official)")
-                    print("please fuck off")
+				if typeof(Constant) == "string" and (table.find(no, Constant)) then
+					local src = debug.info(v, "s")
+					if src and src:find("BClient") then
+						pcall(debug.setconstant, v, j, "haha nice anticheat")
+						break
+					end
 				end
 			end
 		end
@@ -83,6 +90,10 @@ if not LocalPlayer then
     LocalPlayer = Players.LocalPlayer
 end
 local RemoteEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("RemoteEvent")
+local Old; Old = hookfunction(RemoteEvent.FireServer, function(self, id, ...)
+    if not checkcaller() and id == 69 then return error("fuck you") end
+    return Old(self, id, ...)
+end)
 RemoteEvent:FireServer(1, Teams:WaitForChild("Prisoners"))
 task.wait(1.2)
 local Pickups = Workspace:WaitForChild("pickups")
