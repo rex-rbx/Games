@@ -1,3 +1,4 @@
+--// https://unlicense.org/
 local buffer_writef64 = buffer.writef64;
 local buffer_readu8 = buffer.readu8;
 local bit32_bnot = bit32.bnot;
