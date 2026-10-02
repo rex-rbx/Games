@@ -122,7 +122,7 @@ for _, Target in Victims do
             if Knife.Parent == Backpack then Humanoid:EquipTool(Knife) end
             if (Root.Position - TargetRoot.Position).Magnitude <= 37 then
                 local Direction = (TargetHead.Position - Root.Position).Unit
-                RemoteEvent:FireServer(16, Knife, GetGST(), TargetHead, Direction)
+                RemoteEvent:FireServer(19, Knife, GetGST(), TargetHead, Direction)
             end
         end
         task.wait()
