@@ -1,4 +1,24 @@
 --// https://unlicense.org/
+local no = {"ACKickTrigger",
+"ACTrigger",
+"ACCFrameChanged",
+"ACF"}
+for i, v in getgc() do
+	if typeof(v) == "function" and islclosure(v) and not isexecutorclosure(v) then
+		local Success, Constants = pcall(debug.getconstants, v)
+		if Success and Constants then
+			for j, Constant in Constants do
+				if typeof(Constant) == "string" and (table.find(no, Constant)) then
+					local src = debug.info(v, "s")
+					if src and src:find("BClient") then
+						pcall(debug.setconstant, v, j, "haha nice anticheat")
+						break
+					end
+				end
+			end
+		end
+	end
+end
 local buffer_writef64 = buffer.writef64;
 local buffer_readu8 = buffer.readu8;
 local bit32_bnot = bit32.bnot;
