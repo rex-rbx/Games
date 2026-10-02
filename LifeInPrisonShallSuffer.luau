@@ -1,19 +1,12 @@
 --// https://unlicense.org/
-local no = {"ACKickTrigger",
-"ACTrigger",
-"ACCFrameChanged",
-"ACF"}
 for i, v in getgc() do
 	if typeof(v) == "function" and islclosure(v) and not isexecutorclosure(v) then
 		local Success, Constants = pcall(debug.getconstants, v)
 		if Success and Constants then
 			for j, Constant in Constants do
-				if typeof(Constant) == "string" and (table.find(no, Constant)) then
-					local src = debug.info(v, "s")
-					if src and src:find("BClient") then
-						pcall(debug.setconstant, v, j, "haha nice anticheat")
-						break
-					end
+				if typeof(Constant) == "string" and Constant == "ACTrigger" then
+					pcall(debug.setconstant, v, j, "noobAC (its official)")
+                    print("please fuck off")
 				end
 			end
 		end
