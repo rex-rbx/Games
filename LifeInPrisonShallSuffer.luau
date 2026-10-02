@@ -1,35 +1,41 @@
-local function GetGST(timestamp: number?)
-    local t = timestamp or time()
-    local b = buffer.create(8)
-    buffer.writef64(b, 0, t)
-    local b0 = buffer.readu8(b, 0)
-    local b1 = buffer.readu8(b, 1)
-    local b2 = buffer.readu8(b, 2)
-    local b3 = buffer.readu8(b, 3)
-    local b4 = buffer.readu8(b, 4)
-    local b5 = buffer.readu8(b, 5)
-    local b6 = buffer.readu8(b, 6)
-    local b7 = buffer.readu8(b, 7)
-    local nb0 = bit32.bnot(b0)
-    local nb1 = bit32.bnot(b1)
-    local v11 = bit32.bor(bit32.lshift(bit32.band(b2, 51), 2), (bit32.rshift(bit32.band(b2, 204), 2)))
-    local v12 = bit32.bor(bit32.rshift(bit32.band(b3, 240), 4), (bit32.lshift(bit32.band(b3, 15), 4)))
-    local v13 = bit32.bor(bit32.rshift(bit32.band(b4, 240), 4), (bit32.lshift(bit32.band(b4, 15), 4)))
-    local v14 = bit32.bor(bit32.rshift(bit32.band(v13, 204), 2), (bit32.lshift(bit32.band(v13, 51), 2)))
-    local v15 = bit32.bor(bit32.rshift(bit32.band(v14, 170), 1), (bit32.lshift(bit32.band(v14, 85), 1)))
-    local nb5 = bit32.bnot(b5)
-    local nb6 = bit32.bnot(b6)
-    local v18 = bit32.bor(bit32.rshift(bit32.band(b7, 240), 4), (bit32.lshift(bit32.band(b7, 15), 4)))
-    local v19 = bit32.bor(bit32.rshift(bit32.band(v18, 204), 2), (bit32.lshift(bit32.band(v18, 51), 2)))
-    local v20 = bit32.bor(bit32.rshift(bit32.band(v19, 170), 1), (bit32.lshift(bit32.band(v19, 85), 1)))
-    local m0 = bit32.band(255, nb0)
-    local m1 = bit32.band(255, nb1)
-    local m5 = bit32.band(255, nb5)
-    local res1 = bit32.bor(m1, bit32.lshift(bit32.band(255, nb6), 8), bit32.lshift(m0, 16), (bit32.lshift(v12, 24)))
-    local res2 = bit32.bor(v20, bit32.lshift(m5, 8), bit32.lshift(v11, 16), (bit32.lshift(v15, 24)))
-    local res3 = bit32.bnot((bit32.bor(bit32.lshift(res1, 8), (bit32.rshift(res2, 16)))))
-    return { res1, res2, res3 }
-end
+local buffer_writef64 = buffer.writef64;
+local buffer_readu8 = buffer.readu8;
+local bit32_bnot = bit32.bnot;
+local bit32_band = bit32.band;
+local bit32_bor = bit32.bor;
+local bit32_lshift = bit32.lshift;
+local bit32_rshift = bit32.rshift;
+local buffer_create_ret = buffer.create(8);
+local function GST()
+    local time = time()
+    buffer_writef64(buffer_create_ret, 0, time);
+    local v1 = buffer_readu8(buffer_create_ret, 0);
+    local v2 = buffer_readu8(buffer_create_ret, 1);
+    local v3 = buffer_readu8(buffer_create_ret, 2);
+    local v4 = buffer_readu8(buffer_create_ret, 3);
+    local v5 = buffer_readu8(buffer_create_ret, 4);
+    local v6 = buffer_readu8(buffer_create_ret, 5);
+    local v7 = buffer_readu8(buffer_create_ret, 6);
+    local v8 = buffer_readu8(buffer_create_ret, 7);
+    local v9 = bit32_bnot(v1);
+    local v10 = bit32_bnot(v2);
+    local v11 = bit32_bor(bit32_lshift(bit32_band(v3, 51), 2), (bit32_rshift(bit32_band(v3, 204), 2)));
+    local v12 = bit32_bor(bit32_rshift(bit32_band(v4, 240), 4), (bit32_lshift(bit32_band(v4, 15), 4)));
+    local v13 = bit32_bor(bit32_rshift(bit32_band(v5, 240), 4), (bit32_lshift(bit32_band(v5, 15), 4)));
+    local v14 = bit32_bor(bit32_rshift(bit32_band(v13, 204), 2), (bit32_lshift(bit32_band(v13, 51), 2)));
+    local v15 = bit32_bor(bit32_rshift(bit32_band(v14, 170), 1), (bit32_lshift(bit32_band(v14, 85), 1)));
+    local v16 = bit32_bnot(v6);
+    local v17 = bit32_bnot(v7);
+    local v19 = bit32_bor(bit32_rshift(bit32_band(v8, 240), 4), (bit32_lshift(bit32_band(v8, 15), 4)));
+    local v20 = bit32_bor(bit32_rshift(bit32_band(v19, 204), 2), (bit32_lshift(bit32_band(v19, 51), 2)));
+    local v21 = bit32_bor(bit32_rshift(bit32_band(v20, 170), 1), (bit32_lshift(bit32_band(v20, 85), 1)));
+    local v22 = bit32_band(255, v9);
+    local v23 = bit32_band(255, v10);
+    local v24 = bit32_band(255, v16);
+    local v25 = bit32_bor(v23, bit32_lshift(bit32_band(255, v17), 8), bit32_lshift(v22, 16), (bit32_lshift(v12, 24)));
+    local v26 = bit32_bor(v21, bit32_lshift(v24, 8), bit32_lshift(v11, 16), (bit32_lshift(v15, 24)));
+    return { v25, v26, (bit32_bnot((bit32_bor(bit32_lshift(v25, 8), (bit32_rshift(v26, 16)))))) };
+end;
 local HttpService = game:GetService("HttpService")
 local TeleportService = game:GetService("TeleportService")
 local Players = game:GetService("Players")
