@@ -117,7 +117,7 @@ for _, Target in Victims do
         if TargetChar:FindFirstChildOfClass("ForceField") then break end
         if TargetRoot and TargetHead and Root then
             if Humanoid.Sit then Humanoid.Sit = false end
-            Root.CFrame = TargetRoot.CFrame - Vector3.new(0,6,0)
+            Root.CFrame = TargetRoot.CFrame - Vector3.new(0,5,0)
             Root.Velocity = Vector3.zero 
             if Knife.Parent == Backpack then Humanoid:EquipTool(Knife) end
             if (Root.Position - TargetRoot.Position).Magnitude <= 37 then
