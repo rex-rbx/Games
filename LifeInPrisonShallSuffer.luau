@@ -80,7 +80,7 @@ local function GetKnife(MyChar)
             local MeshPart = Pickup:FindFirstChild("Meshes/knife1")
             if MeshPart and MeshPart:IsA("BasePart") then
                 Root.CFrame = CFrame.new(MeshPart.Position)
-                RemoteEvent:FireServer(12, Pickup)
+                RemoteEvent:FireServer(14, Pickup)
                 return true
             end
         end
